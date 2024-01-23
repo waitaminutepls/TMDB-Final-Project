@@ -158,3 +158,9 @@ extension SearchViewController: UISearchBarDelegate {
         return true
     }
 }
+
+extension SearchViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        searchBar.resignFirstResponder()
+    }
+}

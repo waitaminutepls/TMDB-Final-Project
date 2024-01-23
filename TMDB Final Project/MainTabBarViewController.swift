@@ -17,6 +17,7 @@ class MainTabBarViewController: UITabBarController {
         thirdVC.title = "Watch Later"
         
         tabBar.tintColor = .label
+        tabBar.isTranslucent = false
         setViewControllers([firstVC, secondVC, thirdVC], animated: true)
     }
 }

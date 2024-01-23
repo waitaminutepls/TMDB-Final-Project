@@ -1,142 +1,104 @@
 import UIKit
 import Alamofire
 
-class HomeViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class HomeViewController: UIViewController {
     
-    var collectionView: UICollectionView!
+    
+    let sectionTitle: [String] = ["Popular Movies"]
     var moviesArray: [ListMoviesResults] = []
-    var seriesArray: [ListSeriesResults] = []
+    
+    private let homeFeedTable: UITableView = {
+        let table = UITableView(frame: .zero, style: .grouped)
+        table.register(CollectionViewTableViewCell.self, forCellReuseIdentifier: CollectionViewTableViewCell.identifier)
+        return table
+    }()
+    
+    private lazy var headerView: MainPosterView = {
+            let headerView = MainPosterView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height / 2))
+            headerView.randomButton.addTarget(self, action: #selector(randomButtonPressed), for: .touchUpInside)
+            return headerView
+        }()
     
     
-    let basePosterPathURL = "https://image.tmdb.org/t/p/w500"
-    let segmentedControl = UISegmentedControl()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        setupUperCollectionView()
-        setupSegmetedControl()
-        segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged), for: .valueChanged)
-        segmentedControl.selectedSegmentIndex = 1
-        fetchDataForSelectedSegment()
+        view.addSubview(homeFeedTable)
+        homeFeedTable.delegate = self
+        homeFeedTable.dataSource = self
+        homeFeedTable.contentInsetAdjustmentBehavior = .never
+        homeFeedTable.tableHeaderView = headerView
+        fetchMoviesFromServer()
+        
     }
     
-    @objc private func segmentedControlValueChanged() {
-        fetchDataForSelectedSegment()
-        collectionView.reloadData()
-        DispatchQueue.main.async {
-                let indexPath = IndexPath(item: 0, section: 0)
-                if self.collectionView.numberOfItems(inSection: indexPath.section) > 0 {
-                    self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
-                }
-            }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        homeFeedTable.frame = view.bounds
     }
     
-    private func fetchDataForSelectedSegment() {
-        let selectedIndex = segmentedControl.selectedSegmentIndex
-        if selectedIndex == 0 {
-            let popularMoviesURL = "https://api.themoviedb.org/3/movie/popular?api_key=906f4bd102dba0809de8ac6e45137f9a"
-            fetchMoviesFromServer(requestURL: popularMoviesURL)
-        } else if selectedIndex == 1 {
-            let popularSeriesURL = "https://api.themoviedb.org/3/tv/popular?api_key=906f4bd102dba0809de8ac6e45137f9a"
-            fetchSeriesFromServer(requestURL: popularSeriesURL)
+    @objc private func randomButtonPressed() {
+        if let randomMovie = moviesArray.randomElement() {
+            headerView.configure(with: randomMovie)
         }
     }
     
-    private func fetchMoviesFromServer(requestURL: String) {
+    private func fetchMoviesFromServer() {
+        let requestURL = "https://api.themoviedb.org/3/movie/popular?api_key=906f4bd102dba0809de8ac6e45137f9a"
+        
         AF.request(requestURL).responseDecodable(of: ListMovies.self) { [weak self] response in
             guard let self = self else { return }
             switch response.result {
             case .success(let listMovies):
                 self.moviesArray = listMovies.results ?? []
+                if let randomElement = self.moviesArray.randomElement() {
+                    self.headerView.configure(with: randomElement)
+                }
                 DispatchQueue.main.async {
-                    self.collectionView.reloadData()
+                    self.homeFeedTable.reloadData()
                 }
             case .failure(let error):
                 print("Alamofire request failed: \(error)")
             }
         }
     }
+}
+
+extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
-    private func fetchSeriesFromServer(requestURL: String) {
-        AF.request(requestURL).responseDecodable(of: ListSeries.self) { [weak self] response in
-            guard let self = self else { return }
-            switch response.result {
-            case .success(let listSeries):
-                self.seriesArray = listSeries.results ?? []
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
-                }
-            case .failure(let error):
-                print("Alamofire request failed: \(error)")
-            }
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return sectionTitle.count
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CollectionViewTableViewCell.identifier, for: indexPath) as? CollectionViewTableViewCell else {
+            return UITableViewCell()
         }
-    }
-    
-    private func setupSegmetedControl() {
-        segmentedControl.insertSegment(withTitle: "Movies", at: 0, animated: true)
-        segmentedControl.insertSegment(withTitle: "TV Shows", at: 1, animated: true)
-        view.addSubview(segmentedControl)
-        
-        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            segmentedControl.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 8),
-            segmentedControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            segmentedControl.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
-        ])
-    }
-    
-    private func setupUperCollectionView() {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = 0
-        layout.minimumInteritemSpacing = 0
-        
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.contentInsetAdjustmentBehavior = .never
-        collectionView.isPagingEnabled = true
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.backgroundColor = .white
-        collectionView.showsHorizontalScrollIndicator = false
-        
-        collectionView.register(UpperCollectionViewCell.self, forCellWithReuseIdentifier: "movieCell")
-        view.addSubview(collectionView)
-        
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.5)
-        ])
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if segmentedControl.selectedSegmentIndex == 0 {
-            return min(moviesArray.count, 5)
-        } else if segmentedControl.selectedSegmentIndex == 1 {
-            return min(seriesArray.count, 5)
-        }
-        return 0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "movieCell", for: indexPath) as! UpperCollectionViewCell
-        
-        if segmentedControl.selectedSegmentIndex == 0 {
-            let movie = moviesArray[indexPath.item]
-            cell.configure(with: movie.posterPath, baseURL: basePosterPathURL)
-        } else if segmentedControl.selectedSegmentIndex == 1 {
-            let tvShows = seriesArray[indexPath.item]
-            cell.configure(with: tvShows.posterPath, baseURL: basePosterPathURL)
-        }
+        cell.configure(with: moviesArray)
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cellWidth = view.bounds.width
-        let cellHeight = view.bounds.height / 2
-        return CGSize(width: cellWidth, height: cellHeight)
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 200
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        40
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        guard let header = view as? UITableViewHeaderFooterView else { return }
+        header.textLabel?.font = .systemFont(ofSize: 18, weight: .bold)
+        header.textLabel?.frame = CGRect(x: header.bounds.origin.x + 20, y: header.bounds.origin.y, width: 100, height: header.bounds.height)
+        header.textLabel?.textColor = .white
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sectionTitle[section]
     }
 }

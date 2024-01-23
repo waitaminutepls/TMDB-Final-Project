@@ -24,6 +24,8 @@ class PosterCollectionViewCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         posterImageView.frame = contentView.bounds
+        contentView.layer.cornerRadius = 10
+        contentView.layer.masksToBounds = true
     }
     
     public func configure(with model: [ListMoviesResults], indexPath: IndexPath) {

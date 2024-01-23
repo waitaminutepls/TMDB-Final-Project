@@ -24,6 +24,7 @@ class MainPosterView: UIView {
     }()
     
     private func addGradientLayer() {
+        layer.sublayers?.filter { $0 is CAGradientLayer }.forEach { $0.removeFromSuperlayer() }
         let gradientLayer = CAGradientLayer()
         let isDarkMode = traitCollection.userInterfaceStyle == .dark
         gradientLayer.colors = [UIColor.clear.cgColor, isDarkMode ? UIColor.black.cgColor : UIColor.white.cgColor]
@@ -48,10 +49,9 @@ class MainPosterView: UIView {
     }
     
     private func applyConstraints() {
-        
         let randomButtonConstraints = [
             randomButton.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
-            randomButton.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: -1)
+            randomButton.bottomAnchor.constraint(equalTo: imageView.bottomAnchor, constant: -20)
         ]
         NSLayoutConstraint.activate(randomButtonConstraints)
     }
@@ -59,6 +59,7 @@ class MainPosterView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         imageView.frame = bounds
+        addGradientLayer()
     }
     
     func configure(with model: ListMoviesResults) {

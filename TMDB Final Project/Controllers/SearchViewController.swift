@@ -1,7 +1,7 @@
 import UIKit
 import Alamofire
 
-class SearchViewController: UIViewController {
+class SearchViewController: UIViewController, UITableViewDelegate {
     
     let tableView = UITableView()
     let searchBar = UISearchBar()
@@ -43,6 +43,7 @@ class SearchViewController: UIViewController {
     func setupTableView() {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.dataSource = self
+        tableView.delegate = self
         view.addSubview(tableView)
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -50,7 +51,7 @@ class SearchViewController: UIViewController {
             tableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
     
@@ -100,7 +101,6 @@ class SearchViewController: UIViewController {
     }
     
 }
-
 
 extension SearchViewController: UITableViewDataSource {
     
@@ -160,7 +160,10 @@ extension SearchViewController: UISearchBarDelegate {
 }
 
 extension SearchViewController: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        searchBar.resignFirstResponder()
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        if velocity.y > 0 {
+            // Пользователь свайпнул вниз
+            searchBar.resignFirstResponder()
+        }
     }
 }

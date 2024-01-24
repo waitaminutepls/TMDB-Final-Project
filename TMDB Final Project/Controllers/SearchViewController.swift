@@ -6,6 +6,8 @@ class SearchViewController: UIViewController, UITableViewDelegate {
     let tableView = UITableView()
     let searchBar = UISearchBar()
     let noResultLabel = UILabel()
+    var searchTimer: Timer?
+    var searchResults: SearchMovie?
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -14,17 +16,13 @@ class SearchViewController: UIViewController, UITableViewDelegate {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
-    var searchTimer: Timer?
-    var searchResults: SearchMovie?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         setupSearchBar()
         setupTableView()
         setupLabel()
-        
     }
     
     func setupSearchBar() {

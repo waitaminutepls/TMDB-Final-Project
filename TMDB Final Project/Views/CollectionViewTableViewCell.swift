@@ -1,9 +1,11 @@
 import UIKit
 
 class CollectionViewTableViewCell: UITableViewCell {
-
+    
     static let identifier = "CollectionViewTableViewCell"
     private var listMovies: [ListMoviesResults] = [ListMoviesResults]()
+    private var listSeries: [ListSeriesResults] = [ListSeriesResults]()
+    var segmentedControl: SegmentedControlView?
     
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -17,13 +19,8 @@ class CollectionViewTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(collectionView)
-        
         collectionView.delegate = self
         collectionView.dataSource = self
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError()
     }
     
     override func layoutSubviews() {
@@ -31,11 +28,24 @@ class CollectionViewTableViewCell: UITableViewCell {
         collectionView.frame = contentView.bounds
     }
     
-    public func configure(with listMovies: [ListMoviesResults]) {
+    func configure(with listMovies: [ListMoviesResults], segmentedControl: SegmentedControlView) {
         self.listMovies = listMovies
+        self.segmentedControl = segmentedControl
         DispatchQueue.main.async { [weak self] in
             self?.collectionView.reloadData()
         }
+    }
+    
+    func configure(with listSeries: [ListSeriesResults], segmentedControl: SegmentedControlView) {
+        self.listSeries = listSeries
+        self.segmentedControl = segmentedControl
+        DispatchQueue.main.async { [weak self] in
+            self?.collectionView.reloadData()
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError()
     }
 }
 
@@ -45,11 +55,20 @@ extension CollectionViewTableViewCell: UICollectionViewDelegate, UICollectionVie
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PosterCollectionViewCell.identifier, for: indexPath) as? PosterCollectionViewCell else {
             return UICollectionViewCell()
         }
-        cell.configure(with: listMovies, indexPath: indexPath)
+        if segmentedControl?.selectedSegmentIndex == 0 {
+            cell.configureMoviePoster(with: listMovies, indexPath: indexPath)
+        } else if segmentedControl?.selectedSegmentIndex == 1 {
+            cell.configureSeriesPoster(with: listSeries, indexPath: indexPath)
+        }
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return listMovies.count
+        if segmentedControl?.selectedSegmentIndex == 0 {
+            return listMovies.count
+        } else if segmentedControl?.selectedSegmentIndex == 1 {
+            return listSeries.count
+        }
+        return 0
     }
 }

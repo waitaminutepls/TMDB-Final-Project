@@ -154,7 +154,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         header.textLabel?.frame = CGRect(x: header.bounds.minX, y: header.bounds.origin.y, width: tableView.bounds.width, height: header.bounds.height)
         header.textLabel?.backgroundColor = .yellow
         header.textLabel?.textColor = .black
-//        header.textLabel?.textAlignment = .center
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

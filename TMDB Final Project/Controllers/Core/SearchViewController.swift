@@ -60,6 +60,7 @@ class SearchViewController: UIViewController {
             noResultLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
         ])
     }
+    
     private func fetchDataFromServer(with searchText: String) {
         viewModel.fetchSearchFromServer(with: searchText) { [weak self] results in
             guard let self = self else { return }
@@ -73,7 +74,6 @@ class SearchViewController: UIViewController {
         noResultLabel.isHidden = !(viewModel.searchArray.isEmpty || searchText.isEmpty)
         noResultLabel.text = searchText.isEmpty ? "Let's find something interesting..." : "Nothing was found for the request '\(searchText)'"
     }
-    
 }
 
 extension SearchViewController: UISearchResultsUpdating, UISearchControllerDelegate {

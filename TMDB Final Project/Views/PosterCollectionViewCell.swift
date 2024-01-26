@@ -9,6 +9,7 @@ class PosterCollectionViewCell: UICollectionViewCell {
     private let posterImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         return imageView
     }()
     
@@ -16,11 +17,7 @@ class PosterCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         contentView.addSubview(posterImageView)
     }
-    
-    required init?(coder: NSCoder) {
-        fatalError()
-    }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         posterImageView.frame = contentView.bounds
@@ -46,13 +43,14 @@ class PosterCollectionViewCell: UICollectionViewCell {
         posterImageView.sd_setImage(with: imageURL, completed: nil)
     }
     
-    func configureSearchPoster(with model: [SearchResults], indexPath: IndexPath) {
-        guard !model.isEmpty else { return }
-        let item = model[indexPath.row]
-        guard let posterPath = item.posterPath else { return }
+    func configureSearchPoster(with model: SearchResults) {
+        guard let posterPath = model.posterPath else { return }
         let imageURLString = "https://image.tmdb.org/t/p/w500\(posterPath)"
         guard let imageURL = URL(string: imageURLString) else { return }
         posterImageView.sd_setImage(with: imageURL, completed: nil)
-//        titleLabel.text = item.title ?? item.originalTitle
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError()
     }
 }

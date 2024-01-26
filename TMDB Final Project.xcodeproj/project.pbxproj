@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		679DA80A162F0EDE5A485945 /* Pods_TMDB_Final_Project.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9361F6B8FB1B82FCBED93018 /* Pods_TMDB_Final_Project.framework */; };
+		EE05A5462B62D7C3005385FD /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE05A5452B62D7C3005385FD /* SearchViewController.swift */; };
+		EE05A54A2B62FE4C005385FD /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE05A5492B62FE4C005385FD /* APIManager.swift */; };
+		EE05A54C2B6327F5005385FD /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE05A54B2B6327F5005385FD /* SearchViewModel.swift */; };
 		EE989F2B2B5CC9B700A8FE19 /* ListMoviesResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE989F292B5CC9B700A8FE19 /* ListMoviesResults.swift */; };
 		EE989F2C2B5CC9B700A8FE19 /* ListMovies.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE989F2A2B5CC9B700A8FE19 /* ListMovies.swift */; };
 		EEC634CE2B5DE3C400522086 /* ListSeries.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC634CC2B5DE3C400522086 /* ListSeries.swift */; };
@@ -18,13 +21,12 @@
 		EEE6549E2B5C901100585960 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EEE6549D2B5C901100585960 /* Assets.xcassets */; };
 		EEE654A12B5C901100585960 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EEE6549F2B5C901100585960 /* LaunchScreen.storyboard */; };
 		EEE654B02B5C936300585960 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE654AF2B5C936300585960 /* HomeViewController.swift */; };
-		EEE654B22B5C938000585960 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE654B12B5C938000585960 /* SearchViewController.swift */; };
 		EEE654B42B5C93A600585960 /* WatchLaterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE654B32B5C93A600585960 /* WatchLaterViewController.swift */; };
 		EEE654B62B5C9AC100585960 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = EEE654B52B5C9AC100585960 /* Podfile */; };
 		EEE654BA2B5C9B2F00585960 /* SearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE654B82B5C9B2F00585960 /* SearchResults.swift */; };
-		EEE654BB2B5C9B2F00585960 /* SearchMovie.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE654B92B5C9B2F00585960 /* SearchMovie.swift */; };
+		EEE654BB2B5C9B2F00585960 /* SearchItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE654B92B5C9B2F00585960 /* SearchItem.swift */; };
 		EEE654BF2B5CB4FA00585960 /* MainPosterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEE654BE2B5CB4FA00585960 /* MainPosterView.swift */; };
-		EEED98D92B5F1B6A00A6432C /* CollectionViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEED98D82B5F1B6A00A6432C /* CollectionViewTableViewCell.swift */; };
+		EEED98D92B5F1B6A00A6432C /* PosterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEED98D82B5F1B6A00A6432C /* PosterTableViewCell.swift */; };
 		EEF84E1D2B603EA3002D84DF /* PosterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF84E1C2B603EA3002D84DF /* PosterCollectionViewCell.swift */; };
 		EEF84E3B2B606AE0002D84DF /* SegmentedControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEF84E3A2B606AE0002D84DF /* SegmentedControlView.swift */; };
 /* End PBXBuildFile section */
@@ -33,6 +35,9 @@
 		4036C07D4A36AF53873A81F3 /* Pods-TMDB Final Project.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TMDB Final Project.release.xcconfig"; path = "Target Support Files/Pods-TMDB Final Project/Pods-TMDB Final Project.release.xcconfig"; sourceTree = "<group>"; };
 		9361F6B8FB1B82FCBED93018 /* Pods_TMDB_Final_Project.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TMDB_Final_Project.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7E1AE1B5F5D5619446059DB /* Pods-TMDB Final Project.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TMDB Final Project.debug.xcconfig"; path = "Target Support Files/Pods-TMDB Final Project/Pods-TMDB Final Project.debug.xcconfig"; sourceTree = "<group>"; };
+		EE05A5452B62D7C3005385FD /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		EE05A5492B62FE4C005385FD /* APIManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
+		EE05A54B2B6327F5005385FD /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		EE989F292B5CC9B700A8FE19 /* ListMoviesResults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListMoviesResults.swift; sourceTree = "<group>"; };
 		EE989F2A2B5CC9B700A8FE19 /* ListMovies.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListMovies.swift; sourceTree = "<group>"; };
 		EEC634CC2B5DE3C400522086 /* ListSeries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListSeries.swift; sourceTree = "<group>"; };
@@ -45,13 +50,12 @@
 		EEE654A02B5C901100585960 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EEE654A22B5C901100585960 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EEE654AF2B5C936300585960 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
-		EEE654B12B5C938000585960 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		EEE654B32B5C93A600585960 /* WatchLaterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchLaterViewController.swift; sourceTree = "<group>"; };
 		EEE654B52B5C9AC100585960 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		EEE654B82B5C9B2F00585960 /* SearchResults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResults.swift; sourceTree = "<group>"; };
-		EEE654B92B5C9B2F00585960 /* SearchMovie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchMovie.swift; sourceTree = "<group>"; };
+		EEE654B92B5C9B2F00585960 /* SearchItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchItem.swift; sourceTree = "<group>"; };
 		EEE654BE2B5CB4FA00585960 /* MainPosterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPosterView.swift; sourceTree = "<group>"; };
-		EEED98D82B5F1B6A00A6432C /* CollectionViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewTableViewCell.swift; sourceTree = "<group>"; };
+		EEED98D82B5F1B6A00A6432C /* PosterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosterTableViewCell.swift; sourceTree = "<group>"; };
 		EEF84E1C2B603EA3002D84DF /* PosterCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosterCollectionViewCell.swift; sourceTree = "<group>"; };
 		EEF84E3A2B606AE0002D84DF /* SegmentedControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControlView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -104,7 +108,6 @@
 				EEE654AC2B5C916B00585960 /* ViewModels */,
 				EEE654AD2B5C917300585960 /* Views */,
 				EEE654AE2B5C91B400585960 /* Controllers */,
-				EEE654982B5C900F00585960 /* MainTabBarViewController.swift */,
 				EEE654942B5C900F00585960 /* AppDelegate.swift */,
 				EEE654962B5C900F00585960 /* SceneDelegate.swift */,
 				EEE6549D2B5C901100585960 /* Assets.xcassets */,
@@ -117,6 +120,7 @@
 		EEE654A82B5C915200585960 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				EE05A5492B62FE4C005385FD /* APIManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -131,7 +135,7 @@
 		EEE654AB2B5C916600585960 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				EEE654B92B5C9B2F00585960 /* SearchMovie.swift */,
+				EEE654B92B5C9B2F00585960 /* SearchItem.swift */,
 				EEE654B82B5C9B2F00585960 /* SearchResults.swift */,
 				EEC634CC2B5DE3C400522086 /* ListSeries.swift */,
 				EEC634CD2B5DE3C400522086 /* ListSeriesResults.swift */,
@@ -144,6 +148,7 @@
 		EEE654AC2B5C916B00585960 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				EE05A54B2B6327F5005385FD /* SearchViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -153,8 +158,8 @@
 			children = (
 				EEF84E3A2B606AE0002D84DF /* SegmentedControlView.swift */,
 				EEE654BE2B5CB4FA00585960 /* MainPosterView.swift */,
-				EEED98D82B5F1B6A00A6432C /* CollectionViewTableViewCell.swift */,
 				EEF84E1C2B603EA3002D84DF /* PosterCollectionViewCell.swift */,
+				EEED98D82B5F1B6A00A6432C /* PosterTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -162,11 +167,20 @@
 		EEE654AE2B5C91B400585960 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				EEE654AF2B5C936300585960 /* HomeViewController.swift */,
-				EEE654B12B5C938000585960 /* SearchViewController.swift */,
-				EEE654B32B5C93A600585960 /* WatchLaterViewController.swift */,
+				EEF84E4C2B61CF01002D84DF /* Core */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		EEF84E4C2B61CF01002D84DF /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				EEE654AF2B5C936300585960 /* HomeViewController.swift */,
+				EE05A5452B62D7C3005385FD /* SearchViewController.swift */,
+				EEE654B32B5C93A600585960 /* WatchLaterViewController.swift */,
+				EEE654982B5C900F00585960 /* MainTabBarViewController.swift */,
+			);
+			path = Core;
 			sourceTree = "<group>";
 		};
 		FB2C59ADB39401503893751C /* Pods */ = {
@@ -295,14 +309,16 @@
 			files = (
 				EEE654BF2B5CB4FA00585960 /* MainPosterView.swift in Sources */,
 				EEC634CF2B5DE3C400522086 /* ListSeriesResults.swift in Sources */,
-				EEE654B22B5C938000585960 /* SearchViewController.swift in Sources */,
 				EE989F2B2B5CC9B700A8FE19 /* ListMoviesResults.swift in Sources */,
 				EEE654992B5C900F00585960 /* MainTabBarViewController.swift in Sources */,
-				EEE654BB2B5C9B2F00585960 /* SearchMovie.swift in Sources */,
+				EEE654BB2B5C9B2F00585960 /* SearchItem.swift in Sources */,
+				EE05A54C2B6327F5005385FD /* SearchViewModel.swift in Sources */,
 				EE989F2C2B5CC9B700A8FE19 /* ListMovies.swift in Sources */,
 				EEE654952B5C900F00585960 /* AppDelegate.swift in Sources */,
-				EEED98D92B5F1B6A00A6432C /* CollectionViewTableViewCell.swift in Sources */,
+				EE05A54A2B62FE4C005385FD /* APIManager.swift in Sources */,
+				EEED98D92B5F1B6A00A6432C /* PosterTableViewCell.swift in Sources */,
 				EEF84E1D2B603EA3002D84DF /* PosterCollectionViewCell.swift in Sources */,
+				EE05A5462B62D7C3005385FD /* SearchViewController.swift in Sources */,
 				EEE654972B5C900F00585960 /* SceneDelegate.swift in Sources */,
 				EEE654BA2B5C9B2F00585960 /* SearchResults.swift in Sources */,
 				EEE654B02B5C936300585960 /* HomeViewController.swift in Sources */,

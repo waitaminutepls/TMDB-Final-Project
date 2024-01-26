@@ -51,6 +51,15 @@ class PosterTableViewCell: UITableViewCell {
 
 extension PosterTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
     
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if segmentedControl?.selectedSegmentIndex == 0 {
+            return listMovies.count
+        } else if segmentedControl?.selectedSegmentIndex == 1 {
+            return listSeries.count
+        }
+        return 0
+    }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PosterCollectionViewCell.identifier, for: indexPath) as? PosterCollectionViewCell else {
             return UICollectionViewCell()
@@ -61,14 +70,5 @@ extension PosterTableViewCell: UICollectionViewDelegate, UICollectionViewDataSou
             cell.configureSeriesPoster(with: listSeries, indexPath: indexPath)
         }
         return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if segmentedControl?.selectedSegmentIndex == 0 {
-            return listMovies.count
-        } else if segmentedControl?.selectedSegmentIndex == 1 {
-            return listSeries.count
-        }
-        return 0
     }
 }

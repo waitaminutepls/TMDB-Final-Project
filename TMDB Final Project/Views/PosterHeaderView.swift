@@ -47,7 +47,7 @@ class PosterHeaderView: UIView {
         addGradientLayer()
     }
     
-    // MARK: - Configuration
+    // MARK: - Methods
     
     private func addGradientLayer() {
         layer.sublayers?.filter { $0 is CAGradientLayer }.forEach { $0.removeFromSuperlayer() }

@@ -1,10 +1,13 @@
 import UIKit
 import SDWebImage
 
-
 class PosterCollectionViewCell: UICollectionViewCell {
     
+    // MARK: - Properties
+    
     static let identifier = "PosterCollectionViewCell"
+    
+    // MARK: - UI Elements
     
     private let posterImageView: UIImageView = {
         let imageView = UIImageView()
@@ -13,11 +16,21 @@ class PosterCollectionViewCell: UICollectionViewCell {
         return imageView
     }()
     
+    // MARK: - Initialization
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.addSubview(posterImageView)
     }
-
+    
+    // MARK: - Required Initialization
+    
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
+    
+    // MARK: - Layout
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         posterImageView.frame = contentView.bounds
@@ -25,32 +38,25 @@ class PosterCollectionViewCell: UICollectionViewCell {
         contentView.layer.masksToBounds = true
     }
     
-    func configureMoviePoster(with model: [ListMoviesResults], indexPath: IndexPath) {
-        guard !model.isEmpty else { return }
-        let movie = model[indexPath.row]
-        guard let posterPath = movie.posterPath else { return }
-        let imageURLString = "https://image.tmdb.org/t/p/w500\(posterPath)"
-        guard let imageURL = URL(string: imageURLString) else { return }
+    // MARK: - Methods
+    
+    private func configurePoster(with imagePath: String?) {
+        guard let posterPath = imagePath,
+              let imageURL = URL(string: "https://image.tmdb.org/t/p/w500\(posterPath)") else {
+            return
+        }
         posterImageView.sd_setImage(with: imageURL, completed: nil)
     }
     
-    func configureSeriesPoster(with model: [ListSeriesResults], indexPath: IndexPath) {
-        guard !model.isEmpty else { return }
-        let tvShow = model[indexPath.row]
-        guard let posterPath = tvShow.posterPath else { return }
-        let imageURLString = "https://image.tmdb.org/t/p/w500\(posterPath)"
-        guard let imageURL = URL(string: imageURLString) else { return }
-        posterImageView.sd_setImage(with: imageURL, completed: nil)
+    public func configureMoviePoster(with model: ListMoviesResults) {
+        configurePoster(with: model.posterPath)
     }
     
-    func configureSearchPoster(with model: SearchResults) {
-        guard let posterPath = model.posterPath else { return }
-        let imageURLString = "https://image.tmdb.org/t/p/w500\(posterPath)"
-        guard let imageURL = URL(string: imageURLString) else { return }
-        posterImageView.sd_setImage(with: imageURL, completed: nil)
+    public func configureSeriesPoster(with model: ListSeriesResults) {
+        configurePoster(with: model.posterPath)
     }
     
-    required init?(coder: NSCoder) {
-        fatalError()
+    public func configureSearchPoster(with model: SearchResults) {
+        configurePoster(with: model.posterPath)
     }
 }

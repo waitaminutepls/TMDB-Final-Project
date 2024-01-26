@@ -3,13 +3,17 @@ import Alamofire
 
 class SearchViewModel {
     
+    // MARK: - Properties
+    
     private(set) var searchArray: [SearchResults] = []
     
-    func updateSearchResults(_ results: [SearchResults]) {
+    // MARK: - Methods
+    
+    public func updateSearchResults(_ results: [SearchResults]) {
         searchArray = results
     }
 
-    func fetchSearchFromServer(with searchText: String, completion: @escaping ([SearchResults]) -> Void) {
+    public func fetchSearchFromServer(with searchText: String, completion: @escaping ([SearchResults]) -> Void) {
         guard !searchText.isEmpty else { return }
         let apiKey = "906f4bd102dba0809de8ac6e45137f9a"
         let baseURL = "https://api.themoviedb.org/3/search/multi?"

@@ -2,7 +2,11 @@ import UIKit
 
 class SearchViewController: UIViewController {
     
+    // MARK: - Properties
+    
     private var viewModel = SearchViewModel()
+    
+    // MARK: - UI Elements
     
     private lazy var searchResultsCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -36,10 +40,14 @@ class SearchViewController: UIViewController {
         return label
     }()
     
+    // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
     }
+    
+    // MARK: - Configuration
     
     private func setupUI() {
         view.backgroundColor = .systemBackground
@@ -47,19 +55,19 @@ class SearchViewController: UIViewController {
         view.addSubview(noResultLabel)
         navigationItem.searchController = searchController
         searchController.searchResultsUpdater = self
-        
         NSLayoutConstraint.activate([
             searchResultsCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             searchResultsCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5),
             searchResultsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5),
             searchResultsCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            
             noResultLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             noResultLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             noResultLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             noResultLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
         ])
     }
+    
+    // MARK: - Methods
     
     private func fetchDataFromServer(with searchText: String) {
         viewModel.fetchSearchFromServer(with: searchText) { [weak self] results in
@@ -75,6 +83,8 @@ class SearchViewController: UIViewController {
         noResultLabel.text = searchText.isEmpty ? "Let's find something interesting..." : "Nothing was found for the request '\(searchText)'"
     }
 }
+
+// MARK: - Extensions
 
 extension SearchViewController: UISearchResultsUpdating, UISearchControllerDelegate {
     

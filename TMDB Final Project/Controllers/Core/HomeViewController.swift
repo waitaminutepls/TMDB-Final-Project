@@ -10,7 +10,7 @@ class HomeViewController: UIViewController {
     
     private let homeFeedTable: UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
-        table.register(CollectionViewTableViewCell.self, forCellReuseIdentifier: CollectionViewTableViewCell.identifier)
+        table.register(PosterTableViewCell.self, forCellReuseIdentifier: PosterTableViewCell.identifier)
         table.backgroundColor = .systemBackground
         return table
     }()
@@ -129,7 +129,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: CollectionViewTableViewCell.identifier, for: indexPath) as? CollectionViewTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: PosterTableViewCell.identifier, for: indexPath) as? PosterTableViewCell else {
             return UITableViewCell()
         }
         if segmentedControl.selectedSegmentIndex == 0 {

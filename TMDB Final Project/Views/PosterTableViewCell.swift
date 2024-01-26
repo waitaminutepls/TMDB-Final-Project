@@ -1,8 +1,8 @@
 import UIKit
 
-class CollectionViewTableViewCell: UITableViewCell {
+class PosterTableViewCell: UITableViewCell {
     
-    static let identifier = "CollectionViewTableViewCell"
+    static let identifier = "PosterTableViewCell"
     private var listMovies: [ListMoviesResults] = [ListMoviesResults]()
     private var listSeries: [ListSeriesResults] = [ListSeriesResults]()
     var segmentedControl: SegmentedControlView?
@@ -49,7 +49,7 @@ class CollectionViewTableViewCell: UITableViewCell {
     }
 }
 
-extension CollectionViewTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
+extension PosterTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PosterCollectionViewCell.identifier, for: indexPath) as? PosterCollectionViewCell else {

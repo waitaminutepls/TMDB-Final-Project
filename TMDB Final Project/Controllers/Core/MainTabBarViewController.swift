@@ -6,7 +6,7 @@ class MainTabBarViewController: UITabBarController {
         super.viewDidLoad()
         
         let firstVC = UINavigationController(rootViewController: HomeViewController())
-        let secondVC = UINavigationController(rootViewController: SearchViewController())
+        let secondVC = UINavigationController(rootViewController: NewSearchViewController())
         let thirdVC = UINavigationController(rootViewController: WatchLaterViewController())
         
         firstVC.tabBarItem.image = UIImage(systemName: "house")

@@ -1,5 +1,5 @@
 import Foundation
-struct SearchMovie : Codable {
+struct SearchItem : Codable {
 	let page : Int?
 	let results : [SearchResults]?
 	let totalPages : Int?

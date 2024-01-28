@@ -149,6 +149,14 @@
 			path = Search;
 			sourceTree = "<group>";
 		};
+		EE916FF72B65FD6100596D97 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				EE916FF52B65DB1B00596D97 /* SafariController.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		EEE654882B5C900F00585960 = {
 			isa = PBXGroup;
 			children = (
@@ -173,6 +181,7 @@
 				EEE654B52B5C9AC100585960 /* Podfile */,
 				EEE654A82B5C915200585960 /* Managers */,
 				EEE654AB2B5C916600585960 /* Sources */,
+				EE916FF72B65FD6100596D97 /* Helpers */,
 				EEE654AC2B5C916B00585960 /* ViewModels */,
 				EEE654AD2B5C917300585960 /* Views */,
 				EEE654AE2B5C91B400585960 /* Controllers */,
@@ -226,7 +235,6 @@
 				EE6C2E412B645B9500C0DD84 /* Search */,
 				EE6C2E422B645B9A00C0DD84 /* WatchLater */,
 				EE6C2E442B645BAB00C0DD84 /* Main */,
-				EE916FF52B65DB1B00596D97 /* SafariController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";

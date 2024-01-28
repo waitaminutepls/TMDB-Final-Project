@@ -5,9 +5,11 @@ class PosterHeaderView: UIView {
     
     // MARK: - Properties
     
+    var currentItemId: Int?
+    
     let randomButton: UIButton = {
         let button = UIButton()
-        button.setTitle(" RANDOM choice ", for: .normal)
+        button.setTitle(" RANDOM ", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
         button.layer.borderColor = UIColor.yellow.cgColor
         button.layer.backgroundColor = UIColor.yellow.cgColor
@@ -16,6 +18,15 @@ class PosterHeaderView: UIView {
         button.layer.cornerRadius = 5
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
+    }()
+    
+    lazy var segmentedControl: UISegmentedControl = {
+        let items = ["Movies", "TV"]
+        let segmentedControl = UISegmentedControl(items: items)
+        segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.backgroundColor = .systemBackground
+        segmentedControl.isOpaque = true
+        return segmentedControl
     }()
     
     private let imageView: UIImageView = {
@@ -69,10 +80,12 @@ class PosterHeaderView: UIView {
     
     public func configureMovieHeader(with model: ListMoviesResults) {
         configureHeader(with: model.posterPath)
+        currentItemId = model.id
     }
     
     public func configureSeriesHeader(with model: ListSeriesResults) {
         configureHeader(with: model.posterPath)
+        currentItemId = model.id
     }
     
     // MARK: - Trait Collection Changes

@@ -2,6 +2,9 @@ import UIKit
 import SafariServices
 
 class SafariController {
+    
+    // MARK: - Methods
+    
     static func openSafariController(with itemId: Int?, isMovie: Bool, from viewController: UIViewController) {
         guard let itemId = itemId else { return }
         let baseURL: String

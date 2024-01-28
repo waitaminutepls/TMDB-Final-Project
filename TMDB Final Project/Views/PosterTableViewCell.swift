@@ -7,6 +7,7 @@ class PosterTableViewCell: UITableViewCell {
     static let identifier = "PosterTableViewCell"
     private var viewModel: HomeViewModel?
     var segmentedControl: UISegmentedControl?
+    var didSelectItemHandler: ((Int?) -> Void)?
     
     // MARK: - UI Elements
     
@@ -89,5 +90,20 @@ extension PosterTableViewCell: UICollectionViewDelegate, UICollectionViewDataSou
             break
         }
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        switch segmentedControl?.selectedSegmentIndex {
+        case 0:
+            let selectedMovie = viewModel?.moviesArray[indexPath.item]
+            let itemId = selectedMovie?.id
+            didSelectItemHandler?(itemId)
+        case 1:
+            let selectedShow = viewModel?.seriesArray[indexPath.item]
+            let itemId = selectedShow?.id
+            didSelectItemHandler?(itemId)
+        default:
+            break
+        }
     }
 }

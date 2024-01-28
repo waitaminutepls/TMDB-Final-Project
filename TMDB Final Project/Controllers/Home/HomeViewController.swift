@@ -128,11 +128,16 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: PosterTableViewCell.identifier, for: indexPath) as? PosterTableViewCell else {
             return UITableViewCell()
         }
-        
         if segmentedControl.selectedSegmentIndex == 0 {
             cell.configure(with: viewModel.moviesArray, viewModel: viewModel, segmentedControl: segmentedControl)
+            cell.didSelectItemHandler = { [weak self] itemId in
+                SafariController.openSafariController(with: itemId, isMovie: true, from: self ?? UIViewController())
+            }
         } else if segmentedControl.selectedSegmentIndex == 1 {
             cell.configure(with: viewModel.seriesArray, viewModel: viewModel, segmentedControl: segmentedControl)
+            cell.didSelectItemHandler = { [weak self] itemId in
+                SafariController.openSafariController(with: itemId, isMovie: false, from: self ?? UIViewController())
+            }
         }
         return cell
     }

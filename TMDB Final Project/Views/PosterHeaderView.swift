@@ -75,8 +75,6 @@ class PosterHeaderView: UIView {
         configureHeader(with: model.posterPath)
     }
     
-    
-    
     // MARK: - Trait Collection Changes
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

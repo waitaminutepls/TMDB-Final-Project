@@ -11,6 +11,7 @@
 		EE05A5462B62D7C3005385FD /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE05A5452B62D7C3005385FD /* SearchViewController.swift */; };
 		EE05A54C2B6327F5005385FD /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE05A54B2B6327F5005385FD /* SearchViewModel.swift */; };
 		EE6C2E3D2B63F6B700C0DD84 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6C2E3C2B63F6B700C0DD84 /* HomeViewModel.swift */; };
+		EE916FF62B65DB1B00596D97 /* SafariController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE916FF52B65DB1B00596D97 /* SafariController.swift */; };
 		EE989F2B2B5CC9B700A8FE19 /* ListMoviesResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE989F292B5CC9B700A8FE19 /* ListMoviesResults.swift */; };
 		EE989F2C2B5CC9B700A8FE19 /* ListMovies.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE989F2A2B5CC9B700A8FE19 /* ListMovies.swift */; };
 		EEC634CE2B5DE3C400522086 /* ListSeries.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC634CC2B5DE3C400522086 /* ListSeries.swift */; };
@@ -37,6 +38,7 @@
 		EE05A5452B62D7C3005385FD /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		EE05A54B2B6327F5005385FD /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		EE6C2E3C2B63F6B700C0DD84 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		EE916FF52B65DB1B00596D97 /* SafariController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariController.swift; sourceTree = "<group>"; };
 		EE989F292B5CC9B700A8FE19 /* ListMoviesResults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListMoviesResults.swift; sourceTree = "<group>"; };
 		EE989F2A2B5CC9B700A8FE19 /* ListMovies.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListMovies.swift; sourceTree = "<group>"; };
 		EEC634CC2B5DE3C400522086 /* ListSeries.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListSeries.swift; sourceTree = "<group>"; };
@@ -224,6 +226,7 @@
 				EE6C2E412B645B9500C0DD84 /* Search */,
 				EE6C2E422B645B9A00C0DD84 /* WatchLater */,
 				EE6C2E442B645BAB00C0DD84 /* Main */,
+				EE916FF52B65DB1B00596D97 /* SafariController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -357,6 +360,7 @@
 				EEC634CF2B5DE3C400522086 /* ListSeriesResults.swift in Sources */,
 				EE989F2B2B5CC9B700A8FE19 /* ListMoviesResults.swift in Sources */,
 				EEE654992B5C900F00585960 /* MainTabBarViewController.swift in Sources */,
+				EE916FF62B65DB1B00596D97 /* SafariController.swift in Sources */,
 				EEE654BB2B5C9B2F00585960 /* SearchItem.swift in Sources */,
 				EE05A54C2B6327F5005385FD /* SearchViewModel.swift in Sources */,
 				EE989F2C2B5CC9B700A8FE19 /* ListMovies.swift in Sources */,

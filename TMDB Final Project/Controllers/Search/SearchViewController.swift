@@ -115,4 +115,9 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.searchArray.count
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+            let searchResult = viewModel.searchArray[indexPath.item]
+            SafariController.openSearchSafariController(with: searchResult, from: self)
+    }
 }

@@ -34,7 +34,5 @@ class SafariController {
         
         let safariVC = SFSafariViewController(url: url)
         viewController.present(safariVC, animated: true)
-        
-        
     }
 }

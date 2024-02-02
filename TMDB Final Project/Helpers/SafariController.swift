@@ -14,7 +14,7 @@ class SafariController {
         } else {
             baseURL = "https://www.themoviedb.org/tv/"
         }
-
+        
         let urlString = baseURL + "\(itemId)"
         guard let url = URL(string: urlString) else { return }
         
@@ -27,6 +27,25 @@ class SafariController {
         let baseURL: String
         
         if let _ = results.title, let _ = results.releaseDate {
+            baseURL = "https://www.themoviedb.org/movie/"
+        } else {
+            baseURL = "https://www.themoviedb.org/tv/"
+        }
+        
+        let urlString = baseURL + "\(itemId)"
+        guard let url = URL(string: urlString) else { return }
+        
+        let safariVC = SFSafariViewController(url: url)
+        viewController.present(safariVC, animated: true)
+    }
+    
+    static func openWatchLaterSafariController(with results: WatchLaterItem?, from viewController: UIViewController) {
+        guard let item = results,
+              let itemId = results?.id
+        else { return }
+        
+        let baseURL: String
+        if item.isMovie {
             baseURL = "https://www.themoviedb.org/movie/"
         } else {
             baseURL = "https://www.themoviedb.org/tv/"

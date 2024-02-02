@@ -10,7 +10,8 @@ class SearchViewController: UIViewController {
     
     private lazy var searchResultsCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: UIScreen.main.bounds.width / 3 - 7.5, height: 200)
+        let itemSizeWidth = UIScreen.main.bounds.width / 3 - 7.5
+        layout.itemSize = CGSize(width: itemSizeWidth, height: 200)
         layout.minimumInteritemSpacing = 0
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -50,16 +51,21 @@ class SearchViewController: UIViewController {
     // MARK: - Configuration
     
     private func setupUI() {
+        title = "Search"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationItem.largeTitleDisplayMode = .always
         view.backgroundColor = .systemBackground
         view.addSubview(searchResultsCollectionView)
         view.addSubview(noResultLabel)
         navigationItem.searchController = searchController
         searchController.searchResultsUpdater = self
+        searchResultsCollectionView.allowsMultipleSelection = false
         NSLayoutConstraint.activate([
             searchResultsCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             searchResultsCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5),
             searchResultsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5),
             searchResultsCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            
             noResultLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             noResultLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             noResultLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
@@ -70,7 +76,7 @@ class SearchViewController: UIViewController {
     // MARK: - Methods
     
     private func fetchDataFromServer(with searchText: String) {
-        viewModel.fetchSearchFromServer(with: searchText) { [weak self] results in
+        viewModel.fetchSearchResultsFromServer(with: searchText) { [weak self] results in
             guard let self = self else { return }
             self.viewModel.updateSearchResults(results)
             self.searchResultsCollectionView.reloadData()
@@ -84,10 +90,9 @@ class SearchViewController: UIViewController {
     }
 }
 
-// MARK: - Extensions
+// MARK: - Extensions SearchViewController SearchResultsUpdating/ SearchController Delegate
 
 extension SearchViewController: UISearchResultsUpdating, UISearchControllerDelegate {
-    
     func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
             fetchDataFromServer(with: searchText)
@@ -101,14 +106,25 @@ extension SearchViewController: UISearchResultsUpdating, UISearchControllerDeleg
     }
 }
 
+// MARK: - Extensions SearchViewController Delegate/DataSource
+
 extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PosterCollectionViewCell.identifier, for: indexPath) as? PosterCollectionViewCell else {
             return UICollectionViewCell()
         }
         let searchResult = viewModel.searchArray[indexPath.row]
+        let isMovie = searchResult.title != nil
         cell.configureSearchPoster(with: searchResult)
+        cell.setItemClosure {
+            guard let itemId = searchResult.id,
+                  let title = searchResult.title ?? searchResult.name,
+                  let posterURL = searchResult.posterPath,
+                  let overview = searchResult.overview
+            else { return }
+            
+            RealmManager.shared.addWatchLaterItem(addId: itemId, addTitle: title, addPosterURL: posterURL, addOverview: overview, addIsMovie: isMovie)
+        }
         return cell
     }
     
@@ -117,7 +133,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-            let searchResult = viewModel.searchArray[indexPath.item]
-            SafariController.openSearchSafariController(with: searchResult, from: self)
+        let searchResult = viewModel.searchArray[indexPath.item]
+        SafariController.openSearchSafariController(with: searchResult, from: self)
     }
 }

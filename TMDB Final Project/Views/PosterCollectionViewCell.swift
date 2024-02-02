@@ -6,6 +6,7 @@ class PosterCollectionViewCell: UICollectionViewCell {
     // MARK: - Properties
     
     static let identifier = "PosterCollectionViewCell"
+    private var addClosure: (() -> Void)?
     
     // MARK: - UI Elements
     
@@ -25,13 +26,14 @@ class PosterCollectionViewCell: UICollectionViewCell {
     // MARK: - Required Initialization
     
     required init?(coder: NSCoder) {
-        fatalError()
+        super.init(coder: coder)
     }
     
     // MARK: - Layout
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        setupEditMenuInteraction()
         posterImageView.frame = contentView.bounds
         contentView.layer.cornerRadius = 10
         contentView.layer.masksToBounds = true
@@ -57,5 +59,35 @@ class PosterCollectionViewCell: UICollectionViewCell {
     
     public func configureSearchPoster(with model: SearchResults) {
         configurePoster(with: model.posterPath)
+    }
+    
+    private func setupEditMenuInteraction() {
+        let editInteraction = UIContextMenuInteraction(delegate: self)
+        self.addInteraction(editInteraction)
+    }
+    
+    func setItemClosure(_ closure: @escaping (() -> Void)) {
+        self.addClosure = closure
+    }
+}
+
+// MARK: - Extensions PosterCollectionViewCell
+
+extension PosterCollectionViewCell: UIContextMenuInteractionDelegate {
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+        let addItem = UIAction(
+            title: "Add to Watch Later",
+            image: UIImage(systemName: "plus"),
+            identifier: nil,
+            discoverabilityTitle: nil,
+            attributes: [],
+            state: .off
+        ) { [weak self] _ in
+            self?.addClosure?()
+        }
+        
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            UIMenu(title: "", children: [addItem])
+        }
     }
 }

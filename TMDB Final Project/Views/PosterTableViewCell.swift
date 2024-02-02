@@ -6,15 +6,19 @@ class PosterTableViewCell: UITableViewCell {
     
     static let identifier = "PosterTableViewCell"
     private var viewModel: HomeViewModel?
+    private var addClosure: (() -> Void)?
     var segmentedControl: UISegmentedControl?
     var didSelectItemHandler: ((Int?) -> Void)?
-    
+
     // MARK: - UI Elements
     
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: UIScreen.main.bounds.width / 3 , height: UIScreen.main.bounds.height / 3.75)
+        let itemSizeWidth = UIScreen.main.bounds.width / 2.5
+        let itemSizeHeight = UIScreen.main.bounds.height / 3.75
+        layout.itemSize = CGSize(width: itemSizeWidth, height: itemSizeHeight)
         layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 7.5
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(PosterCollectionViewCell.self, forCellWithReuseIdentifier: PosterCollectionViewCell.identifier)
         return collectionView
@@ -25,8 +29,7 @@ class PosterTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(collectionView)
-        collectionView.delegate = self
-        collectionView.dataSource = self
+        setupCollectionView()
     }
     
     // MARK: - Required Initialization
@@ -44,6 +47,12 @@ class PosterTableViewCell: UITableViewCell {
     
     // MARK: - Methods
     
+    private func setupCollectionView() {
+         contentView.addSubview(collectionView)
+         collectionView.delegate = self
+         collectionView.dataSource = self
+     }
+    
     public func configure(with items: [Any], viewModel: HomeViewModel, segmentedControl: UISegmentedControl) {
         self.viewModel = viewModel
         
@@ -52,13 +61,12 @@ class PosterTableViewCell: UITableViewCell {
         } else if let seriesArray = items as? [ListSeriesResults] {
             self.viewModel?.seriesArray = seriesArray
         }
-        
         self.segmentedControl = segmentedControl
-        self.collectionView.reloadData()
+        collectionView.reloadData()
     }
 }
 
-// MARK: - Extensions
+// MARK: - Extensions PosterTableViewCell
 
 extension PosterTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
     
@@ -82,9 +90,28 @@ extension PosterTableViewCell: UICollectionViewDelegate, UICollectionViewDataSou
             if let movie = viewModel?.moviesArray[indexPath.row] {
                 cell.configureMoviePoster(with: movie)
             }
+            cell.setItemClosure {
+                let movieResult = self.viewModel?.moviesArray[indexPath.row]
+                guard let itemId = movieResult?.id,
+                      let title = movieResult?.title,
+                      let posterURL = movieResult?.posterPath,
+                      let overview = movieResult?.overview
+                else { return }
+                RealmManager.shared.addWatchLaterItem(addId: itemId, addTitle: title, addPosterURL: posterURL, addOverview: overview, addIsMovie: true)
+            }
         case 1:
             if let tvShow = viewModel?.seriesArray[indexPath.row] {
                 cell.configureSeriesPoster(with: tvShow)
+            }
+            cell.setItemClosure {
+                let seriesResult = self.viewModel?.seriesArray[indexPath.row]
+                guard let itemId = seriesResult?.id,
+                      let title = seriesResult?.name,
+                      let posterURL = seriesResult?.posterPath,
+                      let overview = seriesResult?.overview
+                else { return }
+                RealmManager.shared.addWatchLaterItem(addId: itemId, addTitle: title, addPosterURL: posterURL, addOverview: overview, addIsMovie: false)
+                NotificationCenter.default.post(name: .itemAddedToWatchList, object: nil)
             }
         default:
             break
@@ -106,4 +133,8 @@ extension PosterTableViewCell: UICollectionViewDelegate, UICollectionViewDataSou
             break
         }
     }
+}
+
+extension Notification.Name {
+    static let itemAddedToWatchList = Notification.Name("ItemAddedToWatchList")
 }

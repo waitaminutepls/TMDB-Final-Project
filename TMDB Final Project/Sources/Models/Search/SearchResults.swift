@@ -4,6 +4,7 @@ struct SearchResults : Codable {
 	let backdropPath : String?
 	let genreIds : [Int]?
 	let id : Int?
+    let name: String?
 	let originalLanguage : String?
 	let originalTitle : String?
 	let overview : String?
@@ -21,6 +22,7 @@ struct SearchResults : Codable {
 		case backdropPath = "backdrop_path"
 		case genreIds = "genre_ids"
 		case id = "id"
+        case name = "name"
 		case originalLanguage = "original_language"
 		case originalTitle = "original_title"
 		case overview = "overview"
@@ -39,6 +41,7 @@ struct SearchResults : Codable {
         backdropPath = try values.decodeIfPresent(String.self, forKey: .backdropPath)
         genreIds = try values.decodeIfPresent([Int].self, forKey: .genreIds)
 		id = try values.decodeIfPresent(Int.self, forKey: .id)
+        name = try values.decodeIfPresent(String.self, forKey: .name)
         originalLanguage = try values.decodeIfPresent(String.self, forKey: .originalLanguage)
         originalTitle = try values.decodeIfPresent(String.self, forKey: .originalTitle)
 		overview = try values.decodeIfPresent(String.self, forKey: .overview)

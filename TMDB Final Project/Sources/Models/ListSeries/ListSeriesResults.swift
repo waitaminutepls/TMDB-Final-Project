@@ -50,5 +50,4 @@ struct ListSeriesResults : Codable {
         voteAverage = try values.decodeIfPresent(Double.self, forKey: .voteAverage)
         voteCount = try values.decodeIfPresent(Int.self, forKey: .voteCount)
 	}
-
 }

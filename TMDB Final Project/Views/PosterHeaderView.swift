@@ -6,16 +6,33 @@ class PosterHeaderView: UIView {
     // MARK: - Properties
     
     var currentItemId: Int?
+    var currentItemTitle: String?
+    var currentItemPosterPath: String?
+    var currentItemOverview: String?
     
     let randomButton: UIButton = {
-        let button = UIButton()
-        button.setTitle(" RANDOM ", for: .normal)
+        let textColor = UIColor { (trait) -> UIColor in
+            return trait.userInterfaceStyle == .dark ? .black : .white
+        }
+        let backgroundColor = UIColor { (trait) -> UIColor in
+            return trait.userInterfaceStyle == .dark ? .white : .black
+        }
+        let button = UIButton(type: .system)
+        button.tintColor = textColor
+        button.backgroundColor = backgroundColor
+        button.setTitle("Tap me", for: .normal)
+        button.layer.cornerRadius = 15
+        button.layer.masksToBounds = true
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
-        button.layer.borderColor = UIColor.yellow.cgColor
-        button.layer.backgroundColor = UIColor.yellow.cgColor
-        button.setTitleColor(.black, for: .normal)
-        button.layer.borderWidth = 1
-        button.layer.cornerRadius = 5
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
+    let addButton: UIButton = {
+        let button = UIButton()
+        button.tintColor = .systemGray2
+        button.setImage(UIImage(systemName: "plus.circle"), for: .normal)
+        button.setImage(UIImage(systemName: "checkmark.circle"), for: .highlighted)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -26,6 +43,7 @@ class PosterHeaderView: UIView {
         segmentedControl.selectedSegmentIndex = 0
         segmentedControl.backgroundColor = .systemBackground
         segmentedControl.isOpaque = true
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         return segmentedControl
     }()
     
@@ -41,6 +59,7 @@ class PosterHeaderView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(imageView)
+        addSubview(addButton) 
         addGradientLayer()
     }
     
@@ -56,6 +75,7 @@ class PosterHeaderView: UIView {
         super.layoutSubviews()
         imageView.frame = bounds
         addGradientLayer()
+        bringSubviewToFront(addButton)
     }
     
     // MARK: - Methods
@@ -81,11 +101,43 @@ class PosterHeaderView: UIView {
     public func configureMovieHeader(with model: ListMoviesResults) {
         configureHeader(with: model.posterPath)
         currentItemId = model.id
+        currentItemTitle = model.title
+        currentItemPosterPath = model.posterPath
+        currentItemOverview = model.overview
+        
+        let isAddedToWatchList = RealmManager.shared.isAddedToWatchList(with: model.id!, isMovie: true)
+        let buttonImageName = isAddedToWatchList ? "checkmark.circle" : "plus.circle"
+        addButton.setImage(UIImage(systemName: buttonImageName), for: .normal)
     }
     
     public func configureSeriesHeader(with model: ListSeriesResults) {
         configureHeader(with: model.posterPath)
         currentItemId = model.id
+        currentItemId = model.id
+        currentItemTitle = model.name
+        currentItemPosterPath = model.posterPath
+        currentItemOverview = model.overview
+        
+        let isAddedToWatchList = RealmManager.shared.isAddedToWatchList(with: model.id!, isMovie: false)
+        let buttonImageName = isAddedToWatchList ? "checkmark.circle" : "plus.circle"
+        addButton.setImage(UIImage(systemName: buttonImageName), for: .normal)
+    }
+    
+    private func randomColor() -> UIColor {
+        let red = CGFloat(drand48())
+        let green = CGFloat(drand48())
+        let blue = CGFloat(drand48())
+        return UIColor(red: red, green: green, blue: blue, alpha: 1.0)
+    }
+    
+    private func setupLetterColor(for title: String) -> NSAttributedString {
+        let attributedString = NSMutableAttributedString(string: title)
+        for (index, _) in title.enumerated() {
+            let color = randomColor()
+            let range = NSMakeRange(index, 1)
+            attributedString.addAttribute(.foregroundColor, value: color, range: range)
+        }
+        return attributedString
     }
     
     // MARK: - Trait Collection Changes

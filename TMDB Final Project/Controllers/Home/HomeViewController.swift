@@ -17,9 +17,10 @@ class HomeViewController: UIViewController {
     }()
     
     private lazy var headerView: PosterHeaderView = {
-        let headerView = PosterHeaderView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height / 1.75))
+        let headerViewHeight = UIScreen.main.bounds.height / 1.75
+        let headerView = PosterHeaderView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: headerViewHeight))
         headerView.randomButton.addTarget(self, action: #selector(randomButtonPressed), for: .touchUpInside)
-        headerView.segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged), for: .valueChanged)
+        headerView.addButton.addTarget(self, action: #selector(addButtonPressed), for: .touchUpInside)
         return headerView
     }()
     
@@ -29,6 +30,8 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         configureSubviews()
         fetchDataFromServer()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleWatchLaterItemsUpdate), name: NSNotification.Name(rawValue: "WatchLaterItemsUpdated"), object: nil)
     }
     
     override func viewDidLayoutSubviews() {
@@ -39,37 +42,52 @@ class HomeViewController: UIViewController {
     // MARK: - Configuration
     
     private func configureSubviews() {
-        view.addSubview(homeFeedTable)
-        view.addSubview(headerView.segmentedControl)
-        view.addSubview(headerView.randomButton)
-        homeFeedTable.delegate = self
-        homeFeedTable.dataSource = self
-        homeFeedTable.contentInsetAdjustmentBehavior = .never
-        homeFeedTable.tableHeaderView = headerView
-        segmentedControlValueChanged()
+        setupTableView()
+        setupHeaderView()
         
-        let headerTapGesture = UITapGestureRecognizer(target: self, action: #selector(headerViewTapped))
+        let headerTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleHeaderViewTap))
         headerView.addGestureRecognizer(headerTapGesture)
     }
     
     private func configureLayout() {
-        headerView.segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+        let buttonWidth = UIScreen.main.bounds.width / 4
         homeFeedTable.frame = view.bounds
         NSLayoutConstraint.activate ([
             headerView.randomButton.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 5),
             headerView.randomButton.centerXAnchor.constraint(equalTo: homeFeedTable.centerXAnchor),
+            headerView.randomButton.widthAnchor.constraint(equalToConstant: buttonWidth),
+            
+            headerView.addButton.centerYAnchor.constraint(equalTo: headerView.segmentedControl.topAnchor, constant: -15),
+            headerView.addButton.centerXAnchor.constraint(equalTo: homeFeedTable.leadingAnchor, constant: 25),
             
             headerView.segmentedControl.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 5),
-            headerView.segmentedControl.leadingAnchor.constraint(equalTo: headerView.randomButton.trailingAnchor, constant: 5),
+            headerView.segmentedControl.leadingAnchor.constraint(equalTo: headerView.randomButton.trailingAnchor, constant: 10),
             headerView.segmentedControl.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5)
         ])
+    }
+    
+    private func setupTableView() {
+        view.addSubview(homeFeedTable)
+        homeFeedTable.delegate = self
+        homeFeedTable.dataSource = self
+        homeFeedTable.contentInsetAdjustmentBehavior = .never
+        homeFeedTable.tableHeaderView = headerView
+    }
+    
+    private func setupHeaderView() {
+        view.addSubview(headerView.segmentedControl)
+        view.addSubview(headerView.randomButton)
+        view.addSubview(headerView.addButton)
+        view.bringSubviewToFront(headerView.addButton)
+        headerView.segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged), for: .valueChanged)
     }
     
     // MARK: - Methods
     
     @objc private func segmentedControlValueChanged() {
         fetchDataFromServer()
-        homeFeedTable.reloadData()
+        homeFeedTable.reloadSections(IndexSet(integer: 0), with: .automatic)
+        updateAddButtonImage()
     }
     
     @objc private func randomButtonPressed() {
@@ -87,7 +105,36 @@ class HomeViewController: UIViewController {
         }
     }
     
-    @objc private func headerViewTapped() {
+    @objc private func addButtonPressed() {
+        guard let itemId = headerView.currentItemId,
+              let itemTitle = headerView.currentItemTitle,
+              let itemPosterPath = headerView.currentItemPosterPath,
+              let itemOverview = headerView.currentItemOverview
+        else { return }
+
+        let isMovie = headerView.segmentedControl.selectedSegmentIndex == 0
+        let isAdded = RealmManager.shared.isAddedToWatchList(with: itemId, isMovie: isMovie)
+
+        switch headerView.segmentedControl.selectedSegmentIndex {
+        case 0:
+            if isAdded {
+                RealmManager.shared.deleteFromWatchList(withItemId: itemId)
+            } else {
+                RealmManager.shared.addWatchLaterItem(addId: itemId, addTitle: itemTitle, addPosterURL: itemPosterPath, addOverview: itemOverview, addIsMovie: true)
+            }
+        case 1:
+            if isAdded {
+                RealmManager.shared.deleteFromWatchList(withItemId: itemId)
+            } else {
+                RealmManager.shared.addWatchLaterItem(addId: itemId, addTitle: itemTitle, addPosterURL: itemPosterPath, addOverview: itemOverview, addIsMovie: false)
+            }
+        default:
+            break
+        }
+        updateAddButtonImage()
+    }
+    
+    @objc private func handleHeaderViewTap() {
         guard let itemId = headerView.currentItemId else { return }
         switch headerView.segmentedControl.selectedSegmentIndex {
         case 0:
@@ -97,6 +144,10 @@ class HomeViewController: UIViewController {
         default:
             break
         }
+    }
+    
+    @objc private func handleWatchLaterItemsUpdate() {
+        updateAddButtonImage()
     }
     
     private func fetchDataFromServer() {
@@ -126,6 +177,18 @@ class HomeViewController: UIViewController {
         }
     }
     
+    public func updateAddButtonImage() {
+        guard let itemId = headerView.currentItemId else { return }
+        let isMovie = headerView.segmentedControl.selectedSegmentIndex == 0
+        let isAdded = RealmManager.shared.isAddedToWatchList(with: itemId, isMovie: isMovie)
+        
+        if isAdded {
+            headerView.addButton.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
+        } else {
+            headerView.addButton.setImage(UIImage(systemName: "plus.circle"), for: .normal)
+        }
+    }
+    
     private func randomColor() -> UIColor {
         let red = CGFloat(drand48())
         let green = CGFloat(drand48())
@@ -140,11 +203,11 @@ class HomeViewController: UIViewController {
             let range = NSMakeRange(index, 1)
             attributedString.addAttribute(.foregroundColor, value: color, range: range)
         }
-        return  attributedString
+        return attributedString
     }
 }
 
-// MARK: - Extensions
+// MARK: - Extensions HomeViewController Delegate/DataSource
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     
@@ -178,7 +241,11 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UIScreen.main.bounds.height / 3.75
+        let rowHeader: CGFloat = 40
+        let headerViewHeight = headerView.bounds.height
+        let tabBarHeight = self.view.safeAreaInsets.bottom
+        let rowHeight = self.view.bounds.height - rowHeader - headerViewHeight - tabBarHeight
+        return rowHeight
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -199,4 +266,8 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return sectionTitle[section]
     }
+}
+
+extension NSNotification.Name {
+    static let watchLaterItemsUpdated = NSNotification.Name(rawValue: "WatchLaterItemsUpdated")
 }

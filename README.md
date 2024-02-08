@@ -13,7 +13,7 @@ I want to present you my project that I've built. It utilizes the TMDB API, func
 
 ### "Search" 
 
-> In "Search" the functionality is similar, but the search is based on our query, also automatic search after 1 second is configured. In the controller the search for movies and TV shows is available. 
+> In "Search" the functionality is similar, but the search is based on our query, also automatic search after 1 second is configured. In the controller the search is available only for movies and TV shows. 
 
 ### "Watch Later"
 
@@ -22,19 +22,15 @@ I want to present you my project that I've built. It utilizes the TMDB API, func
 
 
 ### 🎥 Check out the video below on how it all works, and of course feel free to look at the code!
-<p align="center">
+
 https://github.com/waitaminutepls/TMDB-Final-Project/assets/139869003/e99e02ea-05b6-42d4-8186-36139a48917a
-</p>
 
-  
-
-<h4 align="left">If you have any questions you can email me at: danylo.semenenko@outlook.com 🙌</h3>
+> If you have any questions you can email me at: **danylo.semenenko@outlook.com** 🙌
 
 <h3 align="left">Connect with me:</h3>
 <p align="left">
 <a href="https://linkedin.com/in/danylosemenenko" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="danylosemenenko" height="30" width="40" /></a>
 <a href="https://instagram.com/semenenko.daniel" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/instagram.svg" alt="semenenko.daniel" height="30" width="40" /></a>
-<a href="/https://github.com/waitaminutepls/tmdb-final-project/assets/139869003/e99e02ea-05b6-42d4-8186-36139a48917a" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/rss.svg" alt="https://github.com/waitaminutepls/tmdb-final-project/assets/139869003/e99e02ea-05b6-42d4-8186-36139a48917a" height="30" width="40" /></a>
 </p>
 
 

@@ -1,11 +1,11 @@
 <h1 align="center">Hello, I'm Danylo 👋</h1>
 <h3 align="center">Thanks for taking the time to review my creations 🚀</h3>
 
-<h3 align="left">Connect with me:</h3>
+<h3 align="left">What's going on?</h3>
 <p align="left">
 </p>
 
-I want to present you my project that I've built. I have implemented MVVM architecture to create an application. The application is divided into 3 controllers, each controller has a certain functionality: 
+I want to present you my project that I've built. It utilizes the TMDB API, functioning as a movie library, offering a seamless experience for accessing and managing movie data. In the project, I used MVVM architecture. The application is divided into 3 controllers, each serving specific functionalities:
 
 ### "Home"
 
@@ -29,5 +29,13 @@ https://github.com/waitaminutepls/TMDB-Final-Project/assets/139869003/e99e02ea-0
   
 
 <h4 align="left">If you have any questions you can email me at: danylo.semenenko@outlook.com 🙌</h3>
+
+<h3 align="left">Connect with me:</h3>
+<p align="left">
+<a href="https://linkedin.com/in/danylosemenenko" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="danylosemenenko" height="30" width="40" /></a>
+<a href="https://instagram.com/semenenko.daniel" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/instagram.svg" alt="semenenko.daniel" height="30" width="40" /></a>
+<a href="/https://github.com/waitaminutepls/tmdb-final-project/assets/139869003/e99e02ea-05b6-42d4-8186-36139a48917a" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/rss.svg" alt="https://github.com/waitaminutepls/tmdb-final-project/assets/139869003/e99e02ea-05b6-42d4-8186-36139a48917a" height="30" width="40" /></a>
+</p>
+
 
 
